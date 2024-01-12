@@ -2,10 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\VinylMix;
 use App\Repository\VinylMixRepository;
-use App\Service\MixRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use function Symfony\Component\String\u;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -14,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class VinylController extends AbstractController
 {
     public function __construct(
-        private MixRepository $mixRepository, 
         private bool $isDebug
         )
     {
@@ -44,8 +40,8 @@ class VinylController extends AbstractController
         $genre = $slug ? u(str_replace('-', ' ', $slug))->title(true) : null;
         // $mixes = $this->mixRepository->findAll();
 
-        $mixes = $mixRepository->findAll(); // If you want to query from a table, you'll do that throught the repository of the entity, whose data you need
-        
+        $mixes = $mixRepository->findBy([], ['votes' => 'DESC']); // If you want to query from a table, you'll do that throught the repository of the entity, whose data you need
+
         return $this->render('vinyl/browse.html.twig', [
             'genre' => $genre,
             'mixes' => $mixes,
