@@ -40,7 +40,7 @@ class VinylController extends AbstractController
         $genre = $slug ? u(str_replace('-', ' ', $slug))->title(true) : null;
         // $mixes = $this->mixRepository->findAll();
 
-        $mixes = $mixRepository->findBy([], ['votes' => 'DESC']); // If you want to query from a table, you'll do that throught the repository of the entity, whose data you need
+        $mixes = $mixRepository->findAllOrderedByVotes($slug);
 
         return $this->render('vinyl/browse.html.twig', [
             'genre' => $genre,
